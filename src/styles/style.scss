@@ -1,5 +1,14 @@
 @import "config";
 
+h1 {
+	font-size: 3rem;
+}
+
+.stocks {
+	font-size: 1.3rem;
+	margin: 1em 0;
+}
+
 .modal {
 	display: none;
 	@include position(fixed, 0, 0);

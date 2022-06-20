@@ -6,7 +6,7 @@
 	},
 	"plugins": ["import", "@typescript-eslint"],
 	"rules": {
-		"indent": ["error", "tab"],
+		"@typescript-eslint/indent": ["error", "tab"],
 		"import/newline-after-import": "error",
 		"no-unused-vars": "error",
 		"no-var": "error",

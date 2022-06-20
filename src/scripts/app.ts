@@ -1,8 +1,5 @@
-// import { getQuote } from "./stocks";
+import { Stock } from "./stock";
 
-// getQuote("GOOGL").then((data) => console.log(JSON.stringify(data, null, 4)));
+const stock = new Stock("AAPL", 100, 100);
 
-const addBtn = document.getElementById("add-button");
-const modal = document.getElementById("modal");
-
-addBtn.addEventListener("click", () => (modal.style.display = "block"));
+setTimeout(() => (document.querySelector(".stock").innerHTML = stock.toString()), 3000);
