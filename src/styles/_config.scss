@@ -7,10 +7,15 @@
 	align-items: $align;
 }
 
-@mixin setPosition($position, $top, $left) {
+@mixin position($position, $top, $left) {
 	position: $position;
 	top: $top;
 	left: $left;
+}
+
+@mixin size($width, $height) {
+	width: $width;
+	height: $height;
 }
 
 *,
@@ -23,4 +28,14 @@
 
 body {
 	font-family: "Lato", sans-serif;
+	@include flex(column, center, center);
+	min-height: 100vh;
+}
+
+button {
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+	background: inherit;
+	padding: 0.3em 0.5em;
 }

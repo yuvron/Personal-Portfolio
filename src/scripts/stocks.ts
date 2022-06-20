@@ -1,5 +1,3 @@
-"use strict";
-
 const request = require("request");
 
 function getUrl(symbol: string): string {
