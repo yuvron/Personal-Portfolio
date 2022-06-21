@@ -4,30 +4,35 @@ h1 {
 	font-size: 3rem;
 	margin: 1em 0;
 }
-#search-box {
-	border: 1px solid black;
-	border-radius: 0;
-	width: 200px;
-}
-#search-container {
-	@include flex(column, center, center);
-	width: 200px;
-	.search-item {
-		display: block;
+
+.search-container {
+	position: relative;
+	#search-box {
+		border: 1px solid black;
+		border-radius: 0;
 		width: 100%;
-		background-color: white;
-		padding: 0.3em 0.5em;
-		border-top: 1px solid black;
-		&:nth-of-type(1) {
-			border-top: none;
-		}
-		&:hover {
-			background-color: rgb(190, 239, 255);
-			cursor: pointer;
-		}
 	}
-	.hidden {
-		display: none;
+	#search-results {
+		@include position(absolute, 100%, 0);
+		@include flex(column, center, center);
+		width: 100%;
+		.search-item {
+			display: block;
+			width: 100%;
+			background-color: white;
+			padding: 0.3em 0.5em;
+			border-top: 1px solid black;
+			&:nth-of-type(1) {
+				border-top: none;
+			}
+			&:hover {
+				background-color: rgb(190, 239, 255);
+				cursor: pointer;
+			}
+		}
+		.hidden {
+			display: none;
+		}
 	}
 }
 
