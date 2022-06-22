@@ -9,7 +9,15 @@ const searchResults = document.getElementById("search-results");
 const searchBox = document.getElementById("search-box") as HTMLInputElement;
 const stocksContainer = document.querySelector(".stocks");
 
-searchBox.addEventListener("blur", () => document.querySelectorAll(".search-item").forEach((searchItem) => searchItem.classList.add("hidden")));
+let searchHovered = false;
+
+searchContainer.addEventListener("mouseenter", () => (searchHovered = true));
+searchContainer.addEventListener("mouseleave", () => (searchHovered = false));
+searchBox.addEventListener("blur", () => {
+	if (!searchHovered) {
+		document.querySelectorAll(".search-item").forEach((searchItem) => searchItem.classList.add("hidden"));
+	}
+});
 searchBox.addEventListener("focus", () => document.querySelectorAll(".search-item").forEach((searchItem) => searchItem.classList.remove("hidden")));
 
 searchBox.addEventListener("input", async () => {
@@ -28,8 +36,8 @@ searchBox.addEventListener("input", async () => {
 		.catch((err) => console.log("ERROR: ", err));
 });
 
-function addNewStock(stock: string): void {
-	const newStock = new Stock(stock, 100, 100);
+function addNewStock(ticker: string): void {
+	const newStock = new Stock(ticker, 100, 100);
 	const element = document.createElement("p");
 	element.classList.add("stock");
 	setTimeout(() => (element.innerHTML = newStock.toString()), 3000);

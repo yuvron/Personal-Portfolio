@@ -22,7 +22,7 @@ export class Stock {
 			this.price = data.price;
 			this.currentValue = +(this.holdings * this.price).toFixed(2);
 			this.profitLoss = +(this.currentValue - this.purchaseValue).toFixed(2);
-			this.profitLossPercent = +(this.profitLoss / this.purchaseValue).toFixed(4) * 100;
+			this.profitLossPercent = +((this.profitLoss / this.purchaseValue) * 100).toFixed(4);
 			this.dividendYield = data.dividendYield;
 			this.dividendPayout = +(this.dividendYield * this.holdings).toFixed(2);
 		});
@@ -33,7 +33,7 @@ export class Stock {
 			this.price = data;
 			this.currentValue = +(this.holdings * this.price).toFixed(2);
 			this.profitLoss = +(this.currentValue - this.purchaseValue).toFixed(2);
-			this.profitLossPercent = +(this.profitLoss / this.purchaseValue).toFixed(4) * 100;
+			this.profitLossPercent = +((this.profitLoss / this.purchaseValue) * 100).toFixed(4);
 		});
 	}
 
