@@ -1,43 +1,74 @@
 import { getStockDetails, getStockPrice } from "./fetch";
 
 export class Stock {
+	details: StockDetails;
+	holdings: StockHoldings;
+
+	constructor(ticker: string, shares: number, averageCost: number) {
+		this.initializeStockDetails(ticker);
+		this.initializeStockHoldings(shares, averageCost);
+	}
+
+	private initializeStockDetails(ticker: string): void {
+		getStockDetails(ticker).then((data: { name: string; price: number; dividendYield: number }) => {
+			this.details = {
+				ticker: ticker,
+				name: data.name,
+				price: data.price,
+				dividendYield: data.dividendYield,
+			};
+		});
+	}
+
+	private initializeStockHoldings(shares: number, averageCost: number): void {
+		this.holdings = {
+			shares: shares,
+			averageCost: averageCost,
+			purchaseValue: this.normalize(averageCost * this.details.price),
+			currentValue: this.normalize(this.holdings.shares * this.details.price),
+			profitLoss: this.normalize(this.holdings.currentValue - this.holdings.purchaseValue),
+			profitLossPercent: this.normalize((this.holdings.profitLoss / this.holdings.purchaseValue) * 100),
+			dividendPayout: this.normalize(this.details.dividendYield * this.holdings.shares),
+		};
+	}
+
+	updateStockPrice(): void {
+		getStockPrice(this.details.ticker).then((updatedPrice) => {
+			this.details.price = updatedPrice;
+			this.updateHoldings();
+		});
+	}
+
+	private updateHoldings(): void {
+		this.holdings.currentValue = this.normalize(this.holdings.shares * this.details.price);
+		this.holdings.profitLoss = this.normalize(this.holdings.currentValue - this.holdings.purchaseValue);
+		this.holdings.profitLossPercent = this.normalize((this.holdings.profitLoss / this.holdings.purchaseValue) * 100);
+	}
+
+	private normalize(argument: number): number {
+		return +argument.toFixed(2);
+	}
+
+	toString(): string {
+		return `${this.details.name} (${this.details.ticker}): 
+        ${this.holdings.shares} @ $${this.holdings.averageCost}, 
+        ${this.holdings.profitLossPercent}% ${this.holdings.profitLoss > 0 ? "up" : "down"}`;
+	}
+}
+
+interface StockDetails {
 	ticker: string;
 	name: string;
 	price: number;
-	holdings: number;
+	dividendYield: number;
+}
+
+interface StockHoldings {
+	shares: number;
 	averageCost: number;
 	purchaseValue: number;
 	currentValue: number;
 	profitLoss: number;
 	profitLossPercent: number;
-	dividendYield: number;
 	dividendPayout: number;
-	constructor(ticker: string, holdings: number, averageCost: number) {
-		this.ticker = ticker;
-		this.holdings = holdings;
-		this.averageCost = averageCost;
-		this.purchaseValue = +(this.holdings * this.averageCost).toFixed(2);
-		getStockDetails(ticker).then((data) => {
-			this.name = data.name;
-			this.price = data.price;
-			this.currentValue = +(this.holdings * this.price).toFixed(2);
-			this.profitLoss = +(this.currentValue - this.purchaseValue).toFixed(2);
-			this.profitLossPercent = +((this.profitLoss / this.purchaseValue) * 100).toFixed(4);
-			this.dividendYield = data.dividendYield;
-			this.dividendPayout = +(this.dividendYield * this.holdings).toFixed(2);
-		});
-	}
-
-	updatePrice(): void {
-		getStockPrice(this.ticker).then((data) => {
-			this.price = data;
-			this.currentValue = +(this.holdings * this.price).toFixed(2);
-			this.profitLoss = +(this.currentValue - this.purchaseValue).toFixed(2);
-			this.profitLossPercent = +((this.profitLoss / this.purchaseValue) * 100).toFixed(4);
-		});
-	}
-
-	toString(): string {
-		return `${this.name} (${this.ticker}): ${this.holdings} @ $${this.averageCost}, ${this.profitLossPercent}% ${this.profitLoss > 0 ? "up" : "down"}`;
-	}
 }

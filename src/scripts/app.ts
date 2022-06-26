@@ -40,6 +40,6 @@ function addNewStock(ticker: string): void {
 	const newStock = new Stock(ticker, 100, 100);
 	const element = document.createElement("p");
 	element.classList.add("stock");
-	setTimeout(() => (element.innerHTML = newStock.toString()), 3000);
+	setTimeout(() => (element.innerHTML = newStock.toString()), 2500);
 	stocksContainer.appendChild(element);
 }

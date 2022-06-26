@@ -30,6 +30,7 @@ export function getStockDetails(ticker: string): Promise<{ name: string; price: 
 }
 
 export async function getStockPrice(ticker: string): Promise<number> {
+	options.headers["X-RapidAPI-Host"] = "realstonks.p.rapidapi.com";
 	return fetch(`https://realstonks.p.rapidapi.com/${ticker}`, options)
 		.then((response) => response.json())
 		.then((data) => +data.price)
