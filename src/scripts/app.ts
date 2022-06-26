@@ -7,7 +7,7 @@ import { searchValue } from "./fetch";
 const searchContainer = document.querySelector(".search-container");
 const searchResults = document.getElementById("search-results");
 const searchBox = document.getElementById("search-box") as HTMLInputElement;
-const stocksContainer = document.querySelector(".stocks");
+const stocksContainer = document.querySelector(".my-stocks");
 
 let searchHovered = false;
 
@@ -38,8 +38,5 @@ searchBox.addEventListener("input", async () => {
 
 function addNewStock(ticker: string): void {
 	const newStock = new Stock(ticker, 100, 100);
-	const element = document.createElement("p");
-	element.classList.add("stock");
-	setTimeout(() => (element.innerHTML = newStock.toString()), 2500);
-	stocksContainer.appendChild(element);
+	setTimeout(() => stocksContainer.appendChild(newStock.render()), 3000);
 }

@@ -5,11 +5,23 @@ export class Stock {
 	holdings: StockHoldings;
 
 	constructor(ticker: string, shares: number, averageCost: number) {
-		this.initializeStockDetails(ticker);
-		this.initializeStockHoldings(shares, averageCost);
+		this.initializeStockDetails(ticker, shares, averageCost);
 	}
 
-	private initializeStockDetails(ticker: string): void {
+	render(): HTMLElement {
+		const element = document.createElement("tr");
+		element.innerHTML = `<td>${this.details.ticker}</td>
+		<td>${this.details.name}</td>
+		<td class="dollar">${this.details.price}</td>
+		<td>${this.holdings.shares}</td>
+		<td class="dollar">${this.holdings.averageCost}</td>
+		<td class="dollar">${this.holdings.purchaseValue}</td>
+		<td class="dollar">${this.holdings.currentValue}</td>
+		<td class="dollar ${this.holdings.profitLoss >= 0 ? "profit" : "loss"}">${this.holdings.profitLoss}</td>`;
+		return element;
+	}
+
+	private initializeStockDetails(ticker: string, shares: number, averageCost: number): void {
 		getStockDetails(ticker).then((data: { name: string; price: number; dividendYield: number }) => {
 			this.details = {
 				ticker: ticker,
@@ -17,18 +29,24 @@ export class Stock {
 				price: data.price,
 				dividendYield: data.dividendYield,
 			};
+			this.initializeStockHoldings(shares, averageCost);
 		});
 	}
 
 	private initializeStockHoldings(shares: number, averageCost: number): void {
+		const purchaseValue = this.normalize(shares * averageCost);
+		const currentValue = this.normalize(shares * this.details.price);
+		const profitLoss = this.normalize(currentValue - purchaseValue);
+		const profitLossPercent = this.normalize((profitLoss / purchaseValue) * 100);
+		const dividendPayout = this.normalize(this.details.dividendYield * shares);
 		this.holdings = {
 			shares: shares,
 			averageCost: averageCost,
-			purchaseValue: this.normalize(averageCost * this.details.price),
-			currentValue: this.normalize(this.holdings.shares * this.details.price),
-			profitLoss: this.normalize(this.holdings.currentValue - this.holdings.purchaseValue),
-			profitLossPercent: this.normalize((this.holdings.profitLoss / this.holdings.purchaseValue) * 100),
-			dividendPayout: this.normalize(this.details.dividendYield * this.holdings.shares),
+			purchaseValue: purchaseValue,
+			currentValue: currentValue,
+			profitLoss: profitLoss,
+			profitLossPercent: profitLossPercent,
+			dividendPayout: dividendPayout,
 		};
 	}
 

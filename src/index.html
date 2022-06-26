@@ -11,7 +11,21 @@
 	</head>
 	<body>
 		<h1>My Portfolio</h1>
-		<div class="stocks"></div>
+		<table class="stocks">
+			<thead>
+				<tr>
+					<th>Ticker</th>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Shares</th>
+					<th>Average Cost</th>
+					<th>Purchase Value</th>
+					<th>Market Value</th>
+					<th>Total Gain</th>
+				</tr>
+			</thead>
+			<tbody class="my-stocks"></tbody>
+		</table>
 		<div class="search-container">
 			<input id="search-box" type="text" placeholder="Enter Ticker" />
 			<div id="search-results"></div>
