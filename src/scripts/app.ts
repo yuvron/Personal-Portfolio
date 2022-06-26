@@ -13,12 +13,8 @@ let searchHovered = false;
 
 searchContainer.addEventListener("mouseenter", () => (searchHovered = true));
 searchContainer.addEventListener("mouseleave", () => (searchHovered = false));
-searchBox.addEventListener("blur", () => {
-	if (!searchHovered) {
-		document.querySelectorAll(".search-item").forEach((searchItem) => searchItem.classList.add("hidden"));
-	}
-});
-searchBox.addEventListener("focus", () => document.querySelectorAll(".search-item").forEach((searchItem) => searchItem.classList.remove("hidden")));
+searchBox.addEventListener("blur", () => searchResults.classList.add(!searchHovered ? "hidden" : ""));
+searchBox.addEventListener("focus", () => searchResults.classList.remove("hidden"));
 
 searchBox.addEventListener("input", async () => {
 	const searchTerm = searchBox.value;
@@ -29,7 +25,12 @@ searchBox.addEventListener("input", async () => {
 				const searchItem = document.createElement("p");
 				searchItem.classList.add("search-item");
 				searchItem.innerHTML = stock;
-				searchItem.addEventListener("click", () => addNewStock(stock));
+				searchItem.addEventListener("click", () => {
+					addNewStock(stock);
+					searchResults.classList.add("hidden");
+					searchResults.innerHTML = "";
+					searchBox.value = "";
+				});
 				searchResults.appendChild(searchItem);
 			});
 		})
