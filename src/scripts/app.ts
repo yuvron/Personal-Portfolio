@@ -1,14 +1,13 @@
 import { Stock } from "./stock";
 import { searchValue } from "./fetch";
+import { StocksManager } from "./stocksManager";
 
-// const stock = new Stock("AAPL", 100, 100);
-
-// setTimeout(() => (document.querySelector(".stock").innerHTML = stock.toString()), 3000);
 const searchContainer = document.querySelector(".search-container");
 const searchResults = document.getElementById("search-results");
 const searchBox = document.getElementById("search-box") as HTMLInputElement;
 const stocksContainer = document.querySelector(".my-stocks");
 
+const stocksManager = new StocksManager();
 let searchHovered = false;
 
 searchContainer.addEventListener("mouseenter", () => (searchHovered = true));
